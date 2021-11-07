@@ -25,14 +25,42 @@ def urlget(firstName, lastName)->str:
     url= ('https://en.wikipedia.org/wiki/'+ firstName + '_' + lastName)
     return (url)
 
-def getHeader(firstName, lastName)->str:
-
-    url=urlget(firstName, lastName)
+def createSoup(firstName, lastName)->str:
     
+    url=urlget(firstName, lastName)
     responce = requests.get(url)
     soup = BeautifulSoup(responce.content, 'html.parser')
-    title = soup.find(id='firstHeading')
+    return (soup)
+
+def getContent(firstName, lastName)->str:
+    
+    soup = createSoup(firstName, lastName)
+    content = soup.find_all("td", {"class": "infobox-data"})
+    
+    return (content)
+
+def getTitle(firstName, lastName)->str:
+    
+    soup = createSoup(firstName, lastName)
+    title = soup.find_all("th", {"class": "infobox-label"})
+    
     return (title)
 
-title=getHeader('Lee', 'Aaker')
-print (title.string)
+title=getTitle('Lee', 'Aaker')
+for i in title:
+    print('---')
+    print(i.getText(separator=u' ')) 
+    print('---')
+
+content=getContent('Lee', 'Aaker')
+for j in content:
+    
+    print('---')
+    print(j.getText(separator=u' '))
+    print('---')
+
+for a, b in zip(title, content):
+    print('---')
+    print(a.getText(separator=u' '))
+    print(b.getText(separator=u' '))
+    print('---')
