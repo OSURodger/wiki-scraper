@@ -1,8 +1,4 @@
-"""
-To get this working, input  "pip install "requests"" and
-"pip install "requests"", into the comand prompt
-after having installed Python.
-"""
+"This program will update a CSV file with data about the desired person."
 
 import requests
 from bs4 import BeautifulSoup
