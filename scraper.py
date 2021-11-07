@@ -1,23 +1,10 @@
 """
-To get this working, input  " pip install "requests" " and
-"pip install "requests" " into the comand prompt after
-having installed Python.
-"""
-
-"""
-"Cheap trick to install required modules."
-try:
-    import requests
-except ImportError: 
-    os.system ('python -m pip install requests')
-try:
-    from bs4 import beautifulsoup4
-except ImportError: 
-    os.system ('python -m pip install beautifulsoup4')
+To get this working, input  "pip install "requests"" and
+"pip install "requests"", into the comand prompt
+after having installed Python.
 """
 
 import requests
-
 from bs4 import BeautifulSoup
 
 def urlget(firstName, lastName)->str:
@@ -44,13 +31,22 @@ def getTitle(soup)->str:
     
     return (title)
 
+
+"For demonstration purposes, simply replace these two names with the fristname and last name of the desired person."
+"Then, run the program. It will replace the contents of actorBio.csv with the updated infomation."
 soup=createSoup('Joanne', 'Campbell')
 
 title=getTitle(soup)
 content=getContent(soup)
 
+f = open("actorBio.csv", "w")
+f.write("Type, Data\n")
+f.close()
+
+f = open("actorBio.csv", "a")
 for a, b in zip(title, content):
-    print('---')
-    print(a.getText(separator=u' '))
-    print(b.getText(separator=u' '))
-    print('---')
+    f.write(a.getText()+', ')
+    f.write('"'+b.getText()+'"')
+    f.write('\n')
+f.close()
+
