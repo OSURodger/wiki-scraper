@@ -32,32 +32,22 @@ def createSoup(firstName, lastName)->str:
     soup = BeautifulSoup(responce.content, 'html.parser')
     return (soup)
 
-def getContent(firstName, lastName)->str:
-    
-    soup = createSoup(firstName, lastName)
+def getContent(soup)->str:
+
     content = soup.find_all("td", {"class": "infobox-data"})
     
     return (content)
 
-def getTitle(firstName, lastName)->str:
-    
-    soup = createSoup(firstName, lastName)
+def getTitle(soup)->str:
+
     title = soup.find_all("th", {"class": "infobox-label"})
     
     return (title)
 
-title=getTitle('Lee', 'Aaker')
-for i in title:
-    print('---')
-    print(i.getText(separator=u' ')) 
-    print('---')
+soup=createSoup('Joanne', 'Campbell')
 
-content=getContent('Lee', 'Aaker')
-for j in content:
-    
-    print('---')
-    print(j.getText(separator=u' '))
-    print('---')
+title=getTitle(soup)
+content=getContent(soup)
 
 for a, b in zip(title, content):
     print('---')
