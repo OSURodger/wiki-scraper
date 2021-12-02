@@ -1,7 +1,9 @@
-"This program will update a CSV file with data about the desired person."
+"This program will create a web-page about a person using a given HTML request."
+"Use http://127.0.0.1:5000/<firstName>/<lastName>"
 
 import requests
 from bs4 import BeautifulSoup
+from flask import Flask
 
 def urlget(firstName, lastName)->str:
 
@@ -27,22 +29,30 @@ def getTitle(soup)->str:
     
     return (title)
 
+app = Flask (__name__)
 
-"For demonstration purposes, simply replace these two names with the fristname and last name of the desired person."
-"Then, run the program. It will replace the contents of actorBio.csv with the updated infomation."
-soup=createSoup('Joanne', 'Campbell')
+@app.route('/')
+def home():
+    return "Welcome to the home page. I am working."
 
-title=getTitle(soup)
-content=getContent(soup)
+@app.route("/<firtName>/<lastName>")
+def person(firtName, lastName):
+    #return f'Welcome {firtName} {lastName}'
 
-f = open("actorBio.csv", "w")
-f.write("Type, Data\n")
-f.close()
+    soup=createSoup(firtName, lastName)
+    title=getTitle(soup)
+    content=getContent(soup)
 
-f = open("actorBio.csv", "a")
-for a, b in zip(title, content):
-    f.write(a.getText()+', ')
-    f.write('"'+b.getText()+'"')
-    f.write('\n')
-f.close()
+    retText= '<body><p>'
+    for a, b in zip(title, content):
+        #return (a.getText()+', '
+        retText += (a.getText()+', '+b.getText()+'<br>')
+        #f.write('"'+b.getText()+'"')
+        #f.write('\n')
+    retText += '</p></body>'
+    
+    return (retText)
+
+if __name__ == '__main__':
+    app.run()
 
